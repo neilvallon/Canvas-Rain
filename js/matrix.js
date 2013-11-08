@@ -1,52 +1,89 @@
-var cvs;
+// Array Remove - By John Resig (MIT Licensed)
+Array.prototype.remove = function(from, to) {
+  var rest = this.slice((to || from) + 1 || this.length);
+  this.length = from < 0 ? this.length + from : from;
+  return this.push.apply(this, rest);
+};
+/////////
 
 function Character(x, y, fontSize){
-	this.charStr =  String.fromCharCode(0x30A1 + Math.random() * 89);
-	this.fontSize = fontSize? fontSize : Math.random() * (30 - 5) + 5;
-	
-	this.x = x? x : Math.random() * canvas.width;
-	this.y = y? y : Math.random() * canvas.height;
-	this.brightness = 255;
-	
-	if(this.y < canvas.height){
-		setTimeout(function(){ this.makeChild(); }.bind(this), 80);
-	}
+	this.x = x;
+	this.y = y;
+	this.fontSize = fontSize;
+	this.charStr =  String.fromCharCode(0x30A1 + Math.random() * 89);	
 }
 
-Character.prototype.makeChild = function(){
-	if(Math.random() < 0.01) return; //die
-
-	var c = new Character(this.x, this.y + this.fontSize, this.fontSize);
-	c.draw();
-};
-
-Character.prototype.draw = function(){
-	var shade = 255 - ((255 - this.brightness) * 2);
+Character.prototype.draw = function(brightness){
+	var shade = 255 - ((255 - brightness) * 2);
 	
-	cvs.fillStyle = 'rgb(' + shade + ',' + this.brightness + ',' + shade + ')';
+	cvs.fillStyle = 'rgb(' + shade + ',' + brightness + ',' + shade + ')';
 	cvs.font = this.fontSize + "px Arial";
 	cvs.fillText(this.charStr, this.x, this.y);
-	
-	this.brightness -= 5;
-	if(this.brightness > 0)
-		setTimeout(function(){ this.draw(); }.bind(this), 15);
 };
 
 
+function Stream(){	
+	this.x = Math.random() * canvas.width;
+	this.y = Math.random() * canvas.height;
+	this.fontSize = Math.random() * (48 - 5) + 5;
+	
+	this.stream = [];
+}
+
+Stream.prototype.nextChar = function(){
+	this.y += this.fontSize;
+	return new Character(this.x, this.y + this.fontSize, this.fontSize);
+};
+
+Stream.prototype.isDead = function(){
+	return this.stream.length === 0;
+}
+
+Stream.prototype.draw = function(){
+	if(this.y < canvas.height){
+		var c = this.nextChar();
+		this.stream.unshift(c);
+	}
+	
+	var brightness = 255;
+	for(var i=0; i<this.stream.length; i++){
+		this.stream[i].draw(brightness);
+		if(brightness <= 0 || this.stream[i].y >= canvas.height)
+			this.stream.pop();
+		
+		brightness -= 30;
+	}
+};
+
+
+var cvs;
 window.onload = function(){
 	canvas.width = window.screen.width;
 	canvas.height = window.screen.height;
-
 	cvs = canvas.getContext("2d");
-
-	var createStream = function(){
-		var c = new Character;
-		c.draw();
-	};
+	
 	var clearArtifacts = function(){
 		cvs.clearRect(0, 0, canvas.width, canvas.height);
 	};
-
-	setInterval(createStream, 45);
-	setInterval(clearArtifacts, 1000);
+	
+	var streams = [];
+	
+	var drawMatrix = function(){
+		if(streams.length < 50){
+			var s = new Stream;
+			s.draw();
+			streams.push(s);
+		}
+		
+		clearArtifacts();
+		for(var i=0; i<streams.length; i++){
+			if(streams[i].isDead()){
+				streams.remove(i);
+			}else{
+				streams[i].draw();
+			}
+		}
+	};
+	
+	setInterval(drawMatrix, 80);
 };
