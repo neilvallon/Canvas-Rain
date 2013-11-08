@@ -3,6 +3,8 @@ function Character(x, y, fontSize){
 	this.y = y? y : Math.random() * canvas.height;
 	this.fontSize = fontSize? fontSize : Math.random() * (30 - 5) + 5;
 	this.charStr =  String.fromCharCode(0x30A1 + Math.random() * 89);
+	
+	this.draw(255);
 }
 
 Character.prototype.isDead = function(){
@@ -37,19 +39,15 @@ window.onload = function(){
 		cvs.fillRect(0, 0, canvas.width, canvas.height);
 	};
 	
+	var maxStreams = 50;
 	var streams = [];
+	for(var i=0; i<maxStreams; i++){
+		streams.push(new Character);
+	}
+	
 	var drawMatrix = function(){
 		fadeCanvas();
-		if(streams.length < 10){
-			var s = new Character;
-			s.draw(255);
-			streams.push(s);
-		}
-		
-		for(var i=0; i<streams.length; i++){
-			streams[i] = streams[i].nextCharacter();
-			streams[i].draw(255);
-		}
+		streams = streams.map(function(s){ return s.nextCharacter(); });
 	};
 	
 	setInterval(drawMatrix, 80);
