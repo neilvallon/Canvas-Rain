@@ -1,11 +1,3 @@
-// Array Remove - By John Resig (MIT Licensed)
-Array.prototype.remove = function(from, to) {
-  var rest = this.slice((to || from) + 1 || this.length);
-  this.length = from < 0 ? this.length + from : from;
-  return this.push.apply(this, rest);
-};
-/////////
-
 function Character(x, y, fontSize){
 	this.x = x? x : Math.random() * canvas.width;
 	this.y = y? y : Math.random() * canvas.height;
@@ -19,7 +11,12 @@ Character.prototype.isDead = function(){
 
 Character.prototype.nextCharacter = function(){
 	this.draw(0);
-	return new Character(this.x, this.y + this.fontSize, this.fontSize);
+	
+	if(this.isDead()){
+		return new Character;
+	}else{
+		return new Character(this.x, this.y + this.fontSize, this.fontSize);
+	}
 };
 
 Character.prototype.draw = function(brightness){	
@@ -43,19 +40,15 @@ window.onload = function(){
 	var streams = [];
 	var drawMatrix = function(){
 		fadeCanvas();
-		if(streams.length < 50){
+		if(streams.length < 10){
 			var s = new Character;
 			s.draw(255);
 			streams.push(s);
 		}
 		
 		for(var i=0; i<streams.length; i++){
-			if(streams[i].isDead()){
-				streams.remove(i);
-			}else{
-				streams[i] = streams[i].nextCharacter();
-				streams[i].draw(255);
-			}
+			streams[i] = streams[i].nextCharacter();
+			streams[i].draw(255);
 		}
 	};
 	
