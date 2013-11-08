@@ -9,12 +9,12 @@ function Character(x, y, fontSize){
 
 Character.prototype.isDead = function(){
 	return this.y > canvas.height;
-}
+};
 
 Character.prototype.nextCharacter = function(){
 	this.draw(0);
 	
-	if(this.isDead()){
+	if(this.isDead() || Math.random() < 0.01){
 		return new Character;
 	}else{
 		return new Character(this.x, this.y + this.fontSize, this.fontSize);
@@ -41,9 +41,8 @@ window.onload = function(){
 	
 	var maxStreams = 50;
 	var streams = [];
-	for(var i=0; i<maxStreams; i++){
+	for(var i=0; i<maxStreams; i++)
 		streams.push(new Character);
-	}
 	
 	var drawMatrix = function(){
 		fadeCanvas();
