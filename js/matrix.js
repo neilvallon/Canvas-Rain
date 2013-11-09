@@ -1,8 +1,8 @@
 function Character(x, y, fontSize){
-	this.x = x? x : Math.random() * canvas.width;
-	this.y = y? y : Math.random() * canvas.height;
-	this.fontSize = fontSize? fontSize : Math.random() * (30 - 5) + 5;
-	this.charStr =  String.fromCharCode(0x30A1 + Math.random() * 89);
+	this.x = x? x : Math.round(Math.random() * canvas.width);
+	this.y = y? y : Math.round(Math.random() * canvas.height);
+	this.fontSize = fontSize? fontSize : Math.round(Math.random() * (30 - 5) + 5);
+	this.charStr =  String.fromCharCode(0x30A1 + Math.round(Math.random() * 89));
 	
 	this.draw(255);
 }
