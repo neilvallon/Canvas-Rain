@@ -7,14 +7,27 @@
 		body, canvas{
 			background-color:black;
 			overflow: hidden;
-		}
-		canvas{
 			margin:0;
+		}
+		.wrapper{
+			display:table;
+			height:100%;
+			width:900px;
+			margin:auto;
+		}
+		.main{
+			display:table-cell; 
+			vertical-align:middle;
 		}
 	</style>
 </head>
 
 <body>
+	<div class="wrapper">
+		<div class="main">
+			<a href="javascript:enterMatrix();"><img src="img/red.jpg" /></a><a href="javascript:window.open('','_self').close();"><img src="img/blue.jpg" /></a>
+		</div>
+	</div>
 	<canvas id="canvas"></canvas>
 </body>
 </html>

@@ -29,7 +29,16 @@ Character.prototype.draw = function(brightness){
 
 
 var cvs;
-window.onload = function(){
+var enterMatrix = function(){
+	var elem = document.getElementById("canvas");
+	if (elem.requestFullscreen) {
+	  elem.requestFullscreen();
+	} else if (elem.mozRequestFullScreen) {
+	  elem.mozRequestFullScreen();
+	} else if (elem.webkitRequestFullscreen) {
+	  elem.webkitRequestFullscreen();
+	}
+	
 	canvas.width = window.screen.width;
 	canvas.height = window.screen.height;
 	cvs = canvas.getContext("2d");
