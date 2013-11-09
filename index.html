@@ -1,13 +1,19 @@
 <!doctype>
 <html>
 <head>
-	<title>Matrix Scroller</title>
+	<title>One Pill, Two Pill, Red Pill, Blue Pill.</title>
 	<script src="js/matrix.js"></script>
 	<style>
 		body, canvas{
 			background-color:black;
 			overflow: hidden;
 			margin:0;
+		}
+		a{
+			color:#060;
+			text-decoration:none;
+			font-family:"courier";
+			font-size:12px;
 		}
 		.wrapper{
 			display:table;
@@ -18,6 +24,7 @@
 		.main{
 			display:table-cell; 
 			vertical-align:middle;
+			text-align:center;
 		}
 	</style>
 </head>
@@ -26,6 +33,10 @@
 	<div class="wrapper">
 		<div class="main">
 			<a href="javascript:enterMatrix();"><img src="img/red.jpg" /></a><a href="javascript:window.open('','_self').close();"><img src="img/blue.jpg" /></a>
+			
+			<p>
+				<a href="https://github.com/NeilVallon/Canvas-Rain">{ G I T H U B }</a>
+			</p>
 		</div>
 	</div>
 	<canvas id="canvas"></canvas>
